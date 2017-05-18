@@ -1,0 +1,42 @@
+
+
+    @When("^I add (\\d+) and (\\d+)$")
+    public void iAddAnd(int first, int second) throws Throwable {
+        onView(withText(String.valueOf(first))).perform(click());
+        onView(withText("+")).perform(click());
+        onView(withText(String.valueOf(second))).perform(click());
+    }
+
+    @And("^I press enter$")
+    public void iPressEnter() throws Throwable {
+        onView(withId(R.id.enter)).perform(click());
+    }
+
+    @Then("^I should get (\\d+.\\d+) as the result$")
+    public void iShouldGetAsTheResult(String result) throws Throwable {
+        onView(withId(R.id.result)).check(matches(withText(result)));
+    }
+
+
+Feature: Sum
+  As a user
+  I want to be able to add digits
+  So that I can compute a sum
+
+  Background:
+    Given I launch the app
+
+  Scenario: Sum 1 and 1
+    When I add 1 and 1
+    And I press enter
+    Then I should get 2.0 as the result
+
+  Scenario Outline: Sum
+    When I add <first> and <second>
+    And I press enter
+    Then I should get <result> as the result
+
+    Examples:
+      | first | second | result |
+      | 4     | 2      | 6.0    |
+      | 1     | 1      | 2.0    |
